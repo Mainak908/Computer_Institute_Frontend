@@ -30,6 +30,7 @@ export function NavUser({
     name: string;
     email: string;
     avatar: string;
+    TwoFaEnabled: boolean;
   };
 }) {
   const { isMobile } = useSidebar();
@@ -43,6 +44,15 @@ export function NavUser({
     } catch (error) {
       console.log(error);
       toast("some error happened");
+    }
+  };
+
+  const disable2fa = async () => {
+    try {
+      const data = await fetcherWc("/disable2fa", "POST");
+      toast(data ? "success" : "failed");
+    } catch (error) {
+      console.log(error);
     }
   };
   return (
@@ -94,13 +104,24 @@ export function NavUser({
                 Change Password
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => router.push("/admin/enable2fa")}
-                className="cursor-pointer"
-              >
-                <BadgeCheck />
-                Enable 2FA
-              </DropdownMenuItem>
+
+              {user.TwoFaEnabled ? (
+                <DropdownMenuItem
+                  onClick={disable2fa}
+                  className="cursor-pointer"
+                >
+                  <BadgeCheck />
+                  Disable 2FA
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  onClick={() => router.push("/admin/enable2fa")}
+                  className="cursor-pointer"
+                >
+                  <BadgeCheck />
+                  Enable 2FA
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem

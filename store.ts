@@ -6,6 +6,7 @@ export interface usertype {
   email: string;
   role: "CENTER" | "ADMIN" | "STUDENT";
   avatar: "";
+  TwoFaEnabled: boolean;
 }
 
 export interface Course {
